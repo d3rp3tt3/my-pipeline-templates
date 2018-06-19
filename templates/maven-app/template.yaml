@@ -1,0 +1,8 @@
+- template
+  - displayName: "Simple Maven App"
+  - type: "multiBranchPipeline"
+  - parameters
+     - parameter
+      - displayName: "Recipient"
+      - name: "recipient"
+      - type: "string"
