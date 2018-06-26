@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
     stages {
@@ -6,7 +5,7 @@ pipeline {
             steps {
                 sh "./mvnw verify"
                 // how to expose template parameters such as "$recipient"
-                mail body: 'build successful', subject: "$repoName", to: "$recipient"
+                mail body: 'build successful', subject: "$name repository", to: "$recipient"
 
             }
         }
