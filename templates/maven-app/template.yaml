@@ -1,21 +1,21 @@
-- template
+template:
   - displayName: "Maven App"
   - type: "multiBranchPipeline"
-  - parameters
-     - parameter
-      - displayName: "Name"
-      - name: "name"
-      - type: "string"      
-     - parameter
-      - displayName: "Recipient"
-      - name: "recipient"
-      - type: "string"
-    - parameter
-      - displayName: "GitHub Credentials"
-      - name: "githubCredentials"
-      - type: "credentials"
-  - branchSources
-    - github
-      repoOwner: "my-company"
-      repository: "${name}"
-      credentials: "$githubCredentials"
+  - parameters:
+     - parameter:
+       - displayName: "Name"
+         name: "name"
+         type: "string"      
+     - parameter:
+       - displayName: "Recipient"
+         name: "recipient"
+         type: "string"
+     - parameter:
+       - displayName: "GitHub Credentials"
+         name: "githubCredentials"
+         type: "credentials"
+  - branchSources:
+    - github:
+      - repoOwner: "my-company"
+        repository: "${name}"
+        credentials: "$githubCredentials"
