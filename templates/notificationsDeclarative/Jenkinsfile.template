@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+    node {
+        notifyStarted()
+    }
+    stages {
+        // Actions to take when the build starts
+        stage('Start') {
+            steps {
+                // Notify a Slack channel that the build has started. ${slackChannel} is a custom parameter of this template.
+                slackSend (channel: ${slackChannel}, color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+                // Send an email to the specified address to notify the users of the started  build
+                emailext (
+                    // Custom parameter for this template
+                    to: ${emailRecipient},
+                    subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                    body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                    <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                    recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                )
+            }
+        }
+    }
+
+    // Actions to take after the build completes
+    post {
+        // Actions to take if the build is successful
+        success {
+
+        // Notify a Slack channel of the success. ${slackChannel} is a custom parameter of this template.   
+        slackSend channel: ${slackChannel}, color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+        // Send an email to the specified address to notify the users of the successful build
+        emailext (
+            // Custom parameter for this template
+            to: ${emailRecipient},
+            subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+            body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
+        }
+
+        // Actions to take if the build fails. See the two preceding examples for custom parameter definitions.
+        failure {
+        slackSend (channel: ${slackChannel}, color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+        emailext (
+            to: ${emailRecipient},
+            subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+            body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
+        }
+  }
+}
