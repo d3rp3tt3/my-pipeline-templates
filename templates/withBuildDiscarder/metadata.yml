@@ -1,0 +1,5 @@
+displayName: A template with a job property
+parameters:
+  - name: aParam
+    displayName: An individual parameter
+

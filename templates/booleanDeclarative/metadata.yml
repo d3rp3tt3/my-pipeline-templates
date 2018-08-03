@@ -1,0 +1,6 @@
+displayName: A Declarative template with a boolean parameter
+parameters:
+  - name: TRUE_OR_FALSE
+    displayName: A boolean parameter
+    type: BOOLEAN
+

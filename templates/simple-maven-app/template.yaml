@@ -1,3 +1,0 @@
-template:
-  - displayName: "Simple Maven App"
-  - type: "multiBranchPipeline"
